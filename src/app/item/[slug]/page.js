@@ -47,9 +47,9 @@ export async function generateMetadata({ params }) {
         images: [
           {
             url: item.image_1_url_thumbnail || "",
-            width: imageDimensions.width,
-            height: imageDimensions.height,
-            format: imageDimensions.format,
+            width: imageDimensions ? imageDimensions.width : 100,
+            height: imageDimensions ? imageDimensions.height : 100 ,
+            format: imageDimensions ? imageDimensions.format : 'png',
             alt: item.Title
           },
         ],

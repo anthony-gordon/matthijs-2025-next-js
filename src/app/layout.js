@@ -21,13 +21,13 @@ export const metadata = {
   openGraph: {
     title: "Matthijs Holland | Artist",
     description: "Portfolio of Berlin-based artist Matthijs Holland.",
-    images: [
+    images: ogImage ? [
       {
         url: ogImage.src,
         width: ogImage.width,
         height: ogImage.height
       },
-    ],
+    ] : [],
   }
 };
 
