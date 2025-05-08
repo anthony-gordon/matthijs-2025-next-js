@@ -1,0 +1,46 @@
+.ContactPage {
+  min-height: calc(100vh - 87.5px - 73px);
+  padding: 0;
+}
+
+.ContactPage__title {
+  color: #313131;
+  font-family: "Lora", serif;
+}
+
+.ContactForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 24px;
+}
+
+.ContactForm label {
+  color: #313131;
+  font-family: "Lora", serif;
+}
+
+.ContactForm input#email {
+  height: 32px;
+  padding: 8px;
+  color: #313131;
+  font-family: "Lora", serif;
+}
+
+.ContactForm textarea#message {
+  height: 200px;
+  padding: 8px;
+  color: #313131;
+  font-family: "Lora", serif;
+
+}
+
+.ContactForm button {
+  background-color: #313131;
+  color: #f0f4ec;
+  font-size: 16px;
+  letter-spacing: calc(16px * 0.05);
+  font-weight: bold;
+  font-family: "Nunito Sans", sans-serif;
+  height: 40px;
+}

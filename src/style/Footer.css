@@ -1,0 +1,9 @@
+.Footer__inner.page-container {
+  padding: 48px 0 24px 0;
+}
+
+.Footer__inner.page-container p {
+  color: #313131;
+  font-family: "Lora", serif;
+  font-size: 12px;
+}

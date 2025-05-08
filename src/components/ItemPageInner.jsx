@@ -21,8 +21,13 @@ function ItemPageInner({ item }) {
 
     const primaryImageLoaded = item ? loadedImages[item.id] : false;
 
-    console.log('images', images)
-
+    // Function to handle image load
+    const handleImageLoad = (id) => {
+      setLoadedImages(prevState => ({
+        ...prevState,
+        [id]: true, // Mark image as loaded
+      }));
+    };
   
     return (
         <>
@@ -31,7 +36,8 @@ function ItemPageInner({ item }) {
             <figure className="ItemPage__primary-mobile-image-figure">
             <img
               className="ItemPage__primary-image-mobile"
-              src={item['image_1_url']} 
+              src={primaryImageLoaded ? primaryImageSrc : primaryImageThumbnailSrc} 
+              onLoad={() => handleImageLoad(item.id)} 
               alt={item['image_1_caption']}
               onClick={() => setIndex(0)}
             />
@@ -52,14 +58,18 @@ function ItemPageInner({ item }) {
         </div>
         <div className="ItemPage__gallery">
         {imageUrls.map((url, index) => {
-          let thumbnailImage = item[`image_url_${index + 1}_thumbnail`];
+          let thumbnailImage = item[`image_${index + 1}_url_thumbnail`];
+          console.log(item, 'thumbnailImage', thumbnailImage)
+          const imageLoaded = item ? loadedImages[url] : false;
           return (
             <figure data-index={index} key={url}  className="ItemPage__gallery-figure">
               <img 
-              src={url} 
-              alt={item[`image_${index + 1}_caption`]} 
-              onClick={() => setIndex(index)}
-              className="ItemPage__gallery-image" />
+                src={imageLoaded ? url : thumbnailImage} 
+                onLoad={() => handleImageLoad(url)} 
+                alt={item[`image_${index + 1}_caption`]} 
+                onClick={() => setIndex(index)}
+                className="ItemPage__gallery-image" 
+              />
               <figcaption className="ItemPage__gallery-caption">
                 {item[`image_${index + 1}_caption`]}
               </figcaption>

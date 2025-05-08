@@ -1,6 +1,5 @@
 import './../../../style/ItemPage.css'; 
 import ItemPageInner from './../../../components/ItemPageInner';
-import { Metadata } from 'next';
 import { getImageDimensionsFromUrl } from './../../../utils/imageDimensions';
 
 async function fetchItemData(slug) {

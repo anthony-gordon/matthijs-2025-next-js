@@ -30,6 +30,10 @@
   font-family: "Lora", serif;
 }
 
+.ItemPage__gallery {
+  width: 100%;
+}
+
 .ItemPage__gallery-caption,
 .ItemPage__primary-mobile-image-caption {
   color: #313131;

@@ -1,12 +1,13 @@
+'use client'
+
 import React from 'react';
 import './../style/Header.css'; // Import the CSS file for styling
 import { useRef, useState, useEffect } from "react";
-import { Link } from "react-router-dom"; 
-import { useItems } from './../ItemContext';
+import Link from 'next/link';
 import {disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks} from "body-scroll-lock";
 
 const Header = () => {
-  const { menuOpen, setMenuOpen } = useItems();
+  const [ menuOpen, setMenuOpen ] = useState(false);
   const menuRef = useRef(null);
 
 
@@ -15,9 +16,7 @@ const Header = () => {
   }
 
   useEffect(() => {
-    console.log('change')
     const target = menuRef.current;
-    console.log('target', target)
     if (menuOpen && target) {
       disableBodyScroll(target);
     } else {
@@ -34,7 +33,7 @@ const Header = () => {
     <>
       <header className="header">
         <div className="header-title">
-          <Link to="/" className="site-title">Matthijs Holland</Link>
+          <Link href="/" className="site-title">Matthijs Holland</Link>
         </div>
         <div className="menu-icon">
           <button className="menu-button" data-open={menuOpen} onClick={handleMenuOpenClose}>
@@ -47,9 +46,9 @@ const Header = () => {
       </header>
       <nav ref={menuRef} data-open={menuOpen} className="header__slide-out-nav">
         <div className="header__slide-out-nav-inner page-container">
-          <Link to="/">Home</Link>
-          <Link to="/contact" >Contact</Link>
-          <Link to="/personal-statement">Personal Statement</Link>
+          <Link href="/">Home</Link>
+          <Link href="/contact" >Contact</Link>
+          <Link href="/personal-statement">Personal Statement</Link>
           </div>
       </nav>
     </>
