@@ -46,9 +46,9 @@ const Header = () => {
       </header>
       <nav ref={menuRef} data-open={menuOpen} className="header__slide-out-nav">
         <div className="header__slide-out-nav-inner page-container">
-          <Link href="/">Home</Link>
-          <Link href="/contact" >Contact</Link>
-          <Link href="/personal-statement">Personal Statement</Link>
+          <Link onClick={() => setMenuOpen(false)} href="/">Home</Link>
+          <Link onClick={() => setMenuOpen(false)} href="/contact" >Contact</Link>
+          <Link onClick={() => setMenuOpen(false)} href="/personal-statement">Personal Statement</Link>
           </div>
       </nav>
     </>
