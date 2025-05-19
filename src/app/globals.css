@@ -12,3 +12,7 @@ html, body, div, span, iframe, button, input, select, textarea, p, img, sub, sup
   font: inherit;
   vertical-align: baseline;
 }
+
+body, a {
+  cursor: none;
+}

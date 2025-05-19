@@ -41,7 +41,7 @@
     -moz-transition: .5s ease-in-out;
     -o-transition: .5s ease-in-out;
     transition: .5s ease-in-out;
-    cursor: pointer;
+    cursor: none;
   }
 
   .menu-button span {

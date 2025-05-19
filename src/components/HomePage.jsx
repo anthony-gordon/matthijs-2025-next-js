@@ -20,11 +20,13 @@ function HomePage({ items }) {
           </div>
           <Link className="homepage__tile-link" href={slug} key={slug}>
             <div className="homepage__tile-image-container">
+              <div className="homepage__tile-image-inner-container">
                   <img
                     className="homepage__tile-image"
                     src={imageSrc} 
                     alt={altText}
                   />
+                  </div>
               </div>
           </Link>
         </div>

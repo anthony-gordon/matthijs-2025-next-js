@@ -4,6 +4,8 @@ import '../style/root.css';
 import ogImage from '../../public/logospecial.png'
 import Header from '../components/Header'
 import Footer from '../components/Footer';
+import CustomCursor from '../components/CustomCursor';
+import RouteSpinner from '../components/RouteSpinner';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,8 +44,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Header />
+        <RouteSpinner/>
         {children}
         <Footer />
+        <CustomCursor />
       </body>
     </html>
   );
