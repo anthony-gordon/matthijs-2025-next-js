@@ -6,6 +6,7 @@ import Captions from "yet-another-react-lightbox/plugins/captions";
 import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import { useState, useEffect, useMemo } from "react";
+import { useMyContext } from '../contexts/MyContext'
 
 /*
  * Prevents infinite‑render loops by ensuring the preload effects run only once
@@ -14,6 +15,8 @@ import { useState, useEffect, useMemo } from "react";
  */
 function ItemPageInner({ item }) {
   const [index, setIndex] = useState(-1); // -1 = closed
+  const { loading, setLoading } = useMyContext();
+  const { navigatingTo, setNavigatingTo } = useMyContext();
 
   /* ---------------------- helpers & derived data ---------------------- */
   const imageUrls = useMemo(() =>
@@ -34,6 +37,7 @@ function ItemPageInner({ item }) {
   const primaryThumb = item["image_1_url_thumbnail"];
   const [primaryReady, setPrimaryReady] = useState(false);
 
+
   useEffect(() => {
     if (!primarySrc) return;
     setPrimaryReady(false);
@@ -47,19 +51,33 @@ function ItemPageInner({ item }) {
   const [galleryReady, setGalleryReady] = useState({});
 
   useEffect(() => {
-    // reset when item changes
     setGalleryReady({});
-    imageUrls.forEach((url) => {
-      const img = new Image();
-      img.src = url;
-      img.onload = () =>
-        setGalleryReady((s) => ({ ...s, [url]: true }));
+  
+    const loadImages = imageUrls.map((url) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = () => {
+          setGalleryReady((s) => ({ ...s, [url]: true }));
+          resolve();
+        };
+        img.onerror = resolve; 
+      });
     });
-  }, [item]); // run once per item, not on every render
+  
+    Promise.all(loadImages).then(() => {
+      setTimeout(() => {
+        setLoading(false); 
+        setNavigatingTo('');
+      }, 1000);
+    });
+  }, [item]);
+  
+
 
   return (
     <>
-      <div className="ItemPage__info-container">
+      <div className="ItemPage__info-container" data-loading={loading && navigatingTo === 'itemPage'}>
         <div className="ItemPage__info">
           <figure className="ItemPage__primary-mobile-image-figure">
             <img

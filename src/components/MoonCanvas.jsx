@@ -1,115 +1,47 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
 
 const MoonCanvas = () => {
-  const canvasRef = useRef(null);
-  const phaseRef = useRef(1.01);
-  const directionRef = useRef(-1); // Start going backwards
+  const overlayRef = useRef(null);
+
+  // const canvasRef = useRef(null);
+  // const phaseRef = useRef(1.01);
+  // const directionRef = useRef(-1); // Start going backwards
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.imageSmoothingEnabled = false;
-    const padding = 8;
-    const center = Math.floor(canvas.width / 2) + 0.5;
-    const diameter = canvas.width - padding * 2;
-    const radius = diameter / 2;
+    const svg = document.querySelector('.loadingIndicatorMoon');
+    const svgText = document.querySelector('.RouteSpinner__inner-spinner-text');
 
-    function drawMoon(ctx) {
-      ctx.arc(center, center, radius, 0, 150);
-    }
+    const minViewport = Math.min(window.innerWidth, window.innerHeight);
+    const scale = (minViewport * 0.5) / 200; // 200 is the base width/height
 
-    function drawArc(ctx, start, end, offset, rCoef) {
-      if (rCoef <= 1.0e-15) {
-        ctx.moveTo(center, padding);
-        ctx.arc(center, center, radius, -Math.PI / 2, Math.PI / 2);
-        ctx.lineTo(center, padding);
-        return;
-      }
-      const r = radius / rCoef;
-      const c = Math.sqrt(Math.pow(r, 2) - Math.pow(radius, 2));
-      const x = center + (offset * c);
-      ctx.arc(x, center, r, start, end);
-    }
+    svg.style.transform = `scale(${scale})`;
+    svg.style.transformOrigin = 'center center'; // or 'center' if preferred
+    svgText.style.fontSize = `${minViewport / 4}px`
 
-    function drawShadow(ctx) {
-      let coef = phaseRef.current;
-      coef = Math.min(1.0, Math.max(0.0, coef));
-      let rCoef, start, end, offset;
-
-      if (coef > 0.5) {
-        start = -Math.PI / 2;
-        end = -start;
-        rCoef = (coef - 0.5) * 2;
-        ctx.moveTo(center, padding);
-        drawArc(ctx, start, end, -1, rCoef);
-        ctx.arc(center, center, radius, -start, start, true);
-      } else {
-        start = Math.PI / 2;
-        end = 150;
-        rCoef = 1 - (coef * 2);
-        drawArc(ctx, start, end, 1, rCoef);
-      }
-    }
-
-    function draw() {
-        const phase = phaseRef.current;
-      
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-        // Draw the red moon full circle
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.beginPath();
-        drawMoon(ctx);
-        ctx.fillStyle = '#ff4b33';
-        ctx.fill();
-        ctx.closePath();
-      
-        // Mask the crescent with destination-out
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.beginPath();
-        drawShadow(ctx);
-        ctx.fill();
-        ctx.closePath();
-
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.lineWidth = 2;        // slightly wider than the fringe
-        ctx.beginPath();
-        drawShadow(ctx);          // same path
-        ctx.stroke();             // stroke, not fill
-        ctx.closePath();
-      
-      
-        ctx.globalCompositeOperation = 'source-over';
-      
-        // Smooth speed offset (phase in [0,1])
-        const phaseOffset = -0.039 * Math.pow(phase - 0.5, 2) + 0.01;
-      
-        // Update phase with direction
-        phaseRef.current += phaseOffset * directionRef.current;
-      
-        // Reverse direction at bounds 0 and 1 (no overshoot)
-        if (phaseRef.current <= 0) {
-          phaseRef.current = 0;
-          directionRef.current = 1;
-        } else if (phaseRef.current >= 1) {
-          phaseRef.current = 1;
-          directionRef.current = -1;
-        }
-      }
-
-    const intervalId = setInterval(draw, 2.5);
-    return () => clearInterval(intervalId);
+    gsap.to(overlayRef.current, {
+      duration: 6,
+      attr: { cx: "300" },
+      ease: "slow(0.1, 0.9, false)",
+      repeat: -1,
+      repeatDelay: 1.5,
+    });
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={150}
-      height={150}
-      style={{ backgroundColor: 'transparent' }}
-    />
+    <>
+    <svg width="200" height="200" className="loadingIndicatorMoon">
+      <clipPath id="clip1">
+        <circle cx="100" cy="100" r="90" fill="#f0f4ec" />
+      </clipPath>  
+      <circle cx="100" cy="100" r="90" fill="#f0f4ec" />
+      <circle clipPath="url('#clip1')" cx="85" cy="83" r="95" fill="#f0f4ec" />
+      <circle ref={overlayRef} cx="100" cy="100" r="90" strokeWidth="2" stroke="black" fill="none" />
+      <circle ref={overlayRef} id="overlay" clipPath="url('#clip1')" cx="-100" cy="100" r="90" fill="black" strokeWidth="2" stroke="#313131" />
+    </svg>
+    </>
   );
 };
 

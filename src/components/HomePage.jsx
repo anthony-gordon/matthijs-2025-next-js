@@ -1,6 +1,8 @@
 import Link from 'next/link';
 // import { useItems } from './../ItemContext';
 import './../style/HomePage.css'; 
+import HomePageLink from './HomePageLink'; 
+
 
 function HomePage({ items }) {
 
@@ -18,17 +20,7 @@ function HomePage({ items }) {
          <div key={index} className="homepage__tile-link-outer" data-index={parseInt(index + 1) % 6}>
           <div className="homepage__tile-link-spacer">
           </div>
-          <Link className="homepage__tile-link" href={slug} key={slug}>
-            <div className="homepage__tile-image-container">
-              <div className="homepage__tile-image-inner-container">
-                  <img
-                    className="homepage__tile-image"
-                    src={imageSrc} 
-                    alt={altText}
-                  />
-                  </div>
-              </div>
-          </Link>
+          <HomePageLink index={index} totalItems={items.length} slug={slug} imageSrc={imageSrc} altText={altText} />
         </div>
       )})}
     </div>

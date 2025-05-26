@@ -5,10 +5,19 @@ import './../style/Header.css'; // Import the CSS file for styling
 import { useRef, useState, useEffect } from "react";
 import Link from 'next/link';
 import {disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks} from "body-scroll-lock";
+import { useMyContext } from '../contexts/MyContext'
 
 const Header = () => {
   const [ menuOpen, setMenuOpen ] = useState(false);
   const menuRef = useRef(null);
+
+  const { loading, setLoading } = useMyContext();
+  const { navigatingTo, setNavigatingTo } = useMyContext();
+
+  const handleClick = () => {
+      setLoading(true);
+      setNavigatingTo('homePage');
+    };
 
 
   const handleMenuOpenClose = function(){
@@ -33,7 +42,7 @@ const Header = () => {
     <>
       <header className="header">
         <div className="header-title">
-          <Link href="/" className="site-title">Matthijs Holland</Link>
+          <Link href="/" onClick={handleClick} className="site-title">Matthijs Holland</Link>
         </div>
         <div className="menu-icon">
           <button className="menu-button" data-open={menuOpen} onClick={handleMenuOpenClose}>

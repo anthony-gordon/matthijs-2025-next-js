@@ -6,30 +6,28 @@ import { usePathname } from 'next/navigation';
 import './../style/RouteSpinner.css';
 import MoonCanvas from './MoonCanvas';
 import {disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks} from "body-scroll-lock";
-
+import { useMyContext } from '../contexts/MyContext'
 
 
 
 
 export default function RouteSpinner() {
   const pathname = usePathname();
-  const [loading, setLoading] = useState(false);
+  const { loading } = useMyContext()
   const spinnerRef = useRef(null);
 
   useEffect(() => {
-    setLoading(true);
+    if(loading) {
+    console.log('RouteSpinner: loading is true');
     const target = spinnerRef.current;
     disableBodyScroll(target);
     document.querySelector('body').setAttribute('data-loading', 'true');
-    
-    const timeout = setTimeout(() => {
-      setLoading(false);
+    } else {
+      console.log('RouteSpinner: loading is false');
       clearAllBodyScrollLocks();
       document.querySelector('body').setAttribute('data-loading', 'false');
-    },
-      1050); 
-    return () => clearTimeout(timeout);
-  }, [pathname]);
+    }
+  }, [loading]);
 
   if (!loading) return (
     <div ref={spinnerRef} className="RouteSpinner" data-empty="true"></div>
@@ -40,8 +38,9 @@ export default function RouteSpinner() {
         <div className="RouteSpinner__inner">
             <div className="RouteSpinner__inner-overlay"></div>
             <div className="RouteSpinner__inner-spinner">
-            <canvas id="Moon" width="100" height="100"></canvas>
             <MoonCanvas />
+            <span className="RouteSpinner__inner-spinner-text">loading</span>
+
             {/* <div className="RouteSpinner__inner-spinner-sky">
             <div className="RouteSpinner__inner-spinner-moon">
             </div>
